@@ -38,9 +38,18 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            DurationField(),
-            DurationField(),
+          children: <Widget>[
+            const DurationField(
+              label: 'Duration field',
+              initialDuration: Duration(minutes: 5),
+            ),
+            DurationField(
+              label: 'Duration',
+              onChanged: (values, duration) {
+                print(values);
+                print(duration);
+              },
+            ),
           ],
         ),
       ),

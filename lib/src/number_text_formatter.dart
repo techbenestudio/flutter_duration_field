@@ -2,7 +2,7 @@ import './utils.dart';
 import 'package:flutter/services.dart';
 
 
-class TimeTextFormatter {
+class NumberTextFormatter {
   static TextInputFormatter maxValue(int max) => _MaxValueTextFormatter(max);
   static final zeroSpaceAndDigits = FilteringTextInputFormatter.allow(RegExp(r'[\u200b 0-9]'));
 }

@@ -1,20 +1,20 @@
 import 'dart:async';
 
-import './time_text_formatter.dart';
+import './number_text_formatter.dart';
 import './utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
-class TimeFieldEvent {
+class DurationFieldEvent {
   final String newValue;
   final bool filled;
   final bool empty;
 
-  const TimeFieldEvent({required this.newValue, required this.filled, required this.empty});
+  const DurationFieldEvent({required this.newValue, required this.filled, required this.empty});
 }
 
-class TimeFieldController {
+class DurationFieldController {
   late final TextEditingController controller;
   final focusNode = FocusNode();
   late List<TextInputFormatter> inputFormatters;
@@ -22,10 +22,10 @@ class TimeFieldController {
   final bool zeroPrefix;
   bool nextEventProgrammatic = false;
   late String prevText;
-  final _event$ = StreamController<TimeFieldEvent>.broadcast();
+  final _event$ = StreamController<DurationFieldEvent>.broadcast();
   final int? initialValue;
 
-  TimeFieldController({this.maxValue, required this.zeroPrefix, this.initialValue}) {
+  DurationFieldController({this.maxValue, required this.zeroPrefix, this.initialValue}) {
     final defaultText = initialValue != null ? formatValue(initialValue!) : defaultValue;
 
     controller = TextEditingController(text: defaultText);
@@ -33,11 +33,11 @@ class TimeFieldController {
 
     inputFormatters = [
       LengthLimitingTextInputFormatter(inputLength),
-      TimeTextFormatter.zeroSpaceAndDigits,
+      NumberTextFormatter.zeroSpaceAndDigits,
     ];
 
     if (maxValue != null) {
-      inputFormatters.add(TimeTextFormatter.maxValue(maxValue!));
+      inputFormatters.add(NumberTextFormatter.maxValue(maxValue!));
     }
 
     focusNode.addListener(handleFocusChange);
@@ -51,7 +51,6 @@ class TimeFieldController {
   }
 
   void handleFocusChange() {
-    print(focusNode.hasFocus);
     if (focusNode.hasFocus) {
       text = emptyValue;
       setCursorPosition();
@@ -68,7 +67,7 @@ class TimeFieldController {
 
   void handleValueChange() {
     if (!nextEventProgrammatic) {
-      _event$.add(TimeFieldEvent(
+      _event$.add(DurationFieldEvent(
         newValue: controller.text,
         filled: filled,
         empty: isEmpty,
@@ -110,13 +109,13 @@ class TimeFieldController {
     controller.text = newValue;
   }
 
-  Stream<TimeFieldEvent> get event$ => _event$.stream;
+  Stream<DurationFieldEvent> get event$ => _event$.stream;
 }
 
 typedef TimeFieldValue = List<int?>;
 
-class TimeFormController {
-  final List<TimeFieldController> fields = [];
+class DurationFormController {
+  final List<DurationFieldController> fields = [];
   final _expanded$ = BehaviorSubject<bool>.seeded(false);
   final  _value$ = BehaviorSubject<TimeFieldValue?>.seeded(null);
   TimeFieldValue? currentValue;
@@ -124,7 +123,7 @@ class TimeFormController {
   bool hasValue = false;
   final List<int>? initialValue;
 
-  TimeFormController([this.initialValue]) {
+  DurationFormController([this.initialValue]) {
     if (initialValue != null) {
       hasValue = true;
       emitExpanded();
@@ -136,9 +135,9 @@ class TimeFormController {
     });
   }
 
-  TimeFieldController registerField(int? maxValue) {
+  DurationFieldController registerField(int? maxValue) {
     final int index = fields.length;
-    final newField = TimeFieldController(maxValue: maxValue, zeroPrefix: index != 0, initialValue: initialValue?[index]);
+    final newField = DurationFieldController(maxValue: maxValue, zeroPrefix: index != 0, initialValue: initialValue?[index]);
     fields.add(newField);
 
     newField.event$.listen((event) {
