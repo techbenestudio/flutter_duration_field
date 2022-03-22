@@ -1,0 +1,4 @@
+enum DurationFieldMode {
+  ms,
+  hms,
+}

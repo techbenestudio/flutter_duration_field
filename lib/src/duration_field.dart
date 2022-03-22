@@ -1,22 +1,33 @@
-import 'package:duration_field/src/utils.dart';
-
 import './duration_form_controller.dart';
-import './model/time_field_mode.dart';
+import './model/duration_field_mode.dart';
 import './model/value_labels.dart';
 import 'package:flutter/material.dart';
+import './utils.dart';
 
+/// A widget with separate inputs for duration input
 class DurationField extends StatefulWidget {
+  /// This callback is called with the raw int values and converted [Duration]
   final Function(List<int?>, Duration)? onChanged;
-  final TimeFieldMode mode;
+
+  /// Supports Hours Minutes Seconds or Minutes Seconds mode, defaults [DurationFieldMode.hms]
+  final DurationFieldMode mode;
+
+  /// Adds * to the field label if field is required
   final bool mandatory;
+
+  /// Label displayed above the field
   final String? label;
+
+  /// Initial [Duration] value
   final Duration? initialDuration;
+
+  /// Unit abbreviation displayed under each field, defaults to hrs., min, sec
   final ValueLabels valueLabels;
 
   const DurationField(
       {Key? key,
       this.onChanged,
-      this.mode = TimeFieldMode.hms,
+      this.mode = DurationFieldMode.hms,
       this.mandatory = false,
       this.label,
       this.initialDuration,
@@ -170,8 +181,8 @@ class _DurationFieldState extends State<DurationField> {
     super.dispose();
   }
 
-  bool get isHms => widget.mode == TimeFieldMode.hms;
-  bool get isMs => widget.mode == TimeFieldMode.ms;
+  bool get isHms => widget.mode == DurationFieldMode.hms;
+  bool get isMs => widget.mode == DurationFieldMode.ms;
 }
 
 class _DurationFieldDivider extends StatelessWidget {
@@ -226,7 +237,7 @@ class _DurationFieldItem extends StatelessWidget {
     );
   }
 }
-
+/// A single time input field
 class _DurationNumberField extends StatefulWidget {
   final int? max;
   final DurationFormController formController;
