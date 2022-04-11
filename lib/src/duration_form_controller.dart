@@ -68,7 +68,7 @@ class DurationFieldController {
       text = emptyValue;
       setCursorPosition();
     } else {
-      final int? value = parsePrefixedOrNull(text);
+      final int? value = text.parsePrefixedOrNull();
 
       if (value == null || value == 0) {
         text = defaultValue;
@@ -196,7 +196,7 @@ class DurationFormController {
     hasValue = false;
 
     for (final field in fields) {
-      final fieldValue = parsePrefixedOrNull(field.text);
+      final fieldValue = field.text.parsePrefixedOrNull();
       values.add(fieldValue);
 
       if (fieldValue != null && fieldValue != 0) {
