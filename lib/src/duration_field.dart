@@ -65,11 +65,11 @@ class _DurationFieldState extends State<DurationField> {
 
   List<int>? getInitialValue(Duration duration) {
     if (isHms) {
-      return ConvertDuration.toHms(duration);
+      return duration.inHms;
     }
 
     if (isMs) {
-      return ConvertDuration.toMs(duration);
+      return duration.inMs;
     }
   }
 

@@ -15,7 +15,7 @@ class _MaxValueTextFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     final String newText = newValue.text;
-    final int? newNumber = parsePrefixedOrNull(newText);
+    final int? newNumber = newText.parsePrefixedOrNull();
 
     if (newNumber != null && newText.compareTo(oldValue.text) != 0) {
       return newNumber > max ? oldValue : newValue;

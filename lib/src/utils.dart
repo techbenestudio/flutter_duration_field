@@ -1,24 +1,26 @@
 const zeroPrefixChar = '\u200b';
 
-String trimZeroSpace(String s) {
-  return s.replaceAll(RegExp(r'\u200b'),'');
-}
+extension ZeroWidthChar on String {
+  String trimZeroSpace() {
+    return replaceAll(RegExp(r'\u200b'),'');
+  }
 
-int parsePrefixed(String s) {
-  return int.parse(trimZeroSpace(s));
-}
+  int parsePrefixed() {
+    return int.parse(trimZeroSpace());
+  }
 
-int? parsePrefixedOrNull(String s) {
-  try {
-    return parsePrefixed(s);
-  } catch (_) {
-    return null;
+  int? parsePrefixedOrNull() {
+    try {
+      return parsePrefixed();
+    } catch (_) {
+      return null;
+    }
   }
 }
 
-class ConvertDuration {
-  static List<int> toHms(Duration duration) {
-    int remainder = duration.inSeconds;
+extension DurationConverter on Duration {
+  List<int> get inHms {
+    int remainder = inSeconds;
 
     final hours = remainder ~/ 3600;
     remainder = remainder - hours * 3600;
@@ -28,8 +30,8 @@ class ConvertDuration {
     return [hours, minutes, seconds];
   }
 
-  static List<int> toMs(Duration duration) {
-    int remainder = duration.inSeconds;
+  List<int> get inMs {
+    int remainder = inSeconds;
 
     final minutes = remainder ~/ 60;
     final seconds = remainder - minutes * 60;
